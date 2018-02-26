@@ -1,0 +1,25 @@
+{
+    "name": "vagrant/crm-bel-print-site-form-integration",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "authors": [
+        {
+            "name": "Vladimir Kisilitsa",
+            "email": "vkisilica@example.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "DigitalArts\\Crm\\SiteFormIntegration\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DigitalArts\\Crm\\SiteFormIntegration\\Tests\\": "tests/"
+        }
+    }
+}
