@@ -7,6 +7,7 @@ use DigitalArts\Crm\SiteFormIntegration\Models\Lead;
 use DigitalArts\Crm\SiteFormIntegration\Models\LeadType;
 use DigitalArts\Crm\SiteFormIntegration\Models\User;
 use DigitalArts\Crm\SiteFormIntegration\Tests\Base;
+use GuzzleHttp\Client as Guzzle;
 
 class SendFormToCrmTest extends Base
 {
@@ -86,7 +87,7 @@ class SendFormToCrmTest extends Base
             "expires_in" => 36000
         ]);
         $responseLogin = $this->createResponseMock($streamloginContent);
-        $httpLogin = $this->getMockBuilder(\GuzzleHttp\Client::class)
+        $httpLogin = $this->getMockBuilder(Guzzle::class)
             ->setConstructorArgs([[
                 'base_uri' => 'http://test.domain/api'
             ]])
@@ -98,7 +99,7 @@ class SendFormToCrmTest extends Base
         $loginData = $login->token($username, $password);
 
         $this->assertEquals('fake_token', $loginData['token']);
-        $httpBuilder = $this->getMockBuilder(\GuzzleHttp\Client::class)->setConstructorArgs([[
+        $httpBuilder = $this->getMockBuilder(Guzzle::class)->setConstructorArgs([[
             'base_uri' => 'http://test.domain/api',
             'headers' => [
                 "Authorization" => 'Bearer ' . $loginData['token']

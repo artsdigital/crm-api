@@ -15,7 +15,7 @@ abstract class Base implements ModelInterface
         $this->client = $client;
     }
 
-    public function where(array $parameters)
+    public function where(array $parameters): self
     {
         $this->where = $parameters;
         return $this;
