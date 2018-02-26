@@ -1,5 +1,5 @@
 {
-    "name": "vagrant/crm-bel-print-site-form-integration",
+    "name": "artsdigital/crm-api",
     "require": {
         "guzzlehttp/guzzle": "^6.3"
     },
