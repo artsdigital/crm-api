@@ -2,6 +2,7 @@
 
 namespace DigitalArts\Crm\SiteFormIntegration\Tests\Unit\Models;
 
+use DigitalArts\Crm\SiteFormIntegration\Exceptions\ProjectIdExpectedException;
 use DigitalArts\Crm\SiteFormIntegration\Tests\Base as BaseTest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -11,6 +12,7 @@ abstract class Base extends BaseTest
     protected $httpClient;
     protected $response;
     protected $expects;
+    protected $project;
 
     public function setUp() /* The :void return type declaration that should be here would cause a BC issue */
     {
@@ -58,10 +60,11 @@ abstract class Base extends BaseTest
             ]
         ]);
         $response = $this->createResponseMock($streamContent);
-        $this->httpClient->method('request')->with('get', $this->getIndexUri(), $where)->willReturn($response);
+        $this->httpClient->method('request')->with('get', $this->getIndexUri(), ['json' => $where])->willReturn($response);
 
         $model = $this->getModel();
         $clientModel = new $model($this->httpClient);
+        $clientModel->setProjectId($this->getProjectId());
         $actual = $clientModel->first();
         $this->assertEquals($this->expects, $actual);
     }
@@ -80,7 +83,7 @@ abstract class Base extends BaseTest
             'json_data' => $expects
         ];
         $response = $this->createResponseMock(json_encode($expects));
-        $this->httpClient->method('request')->with('post', $this->getCreateUri(), $create)->willReturn($response);
+        $this->httpClient->method('request')->with('post', $this->getCreateUri(), ['json' => $create])->willReturn($response);
 
         $model = $this->getModel();
         $clientModel = new $model($this->httpClient);
@@ -104,10 +107,11 @@ abstract class Base extends BaseTest
             ]
         ]);
         $response = $this->createResponseMock($streamContent);
-        $this->httpClient->method('request')->with('get', $this->getIndexUri(), $where)->willReturn($response);
+        $this->httpClient->method('request')->with('get', $this->getIndexUri(), ['json' => $where])->willReturn($response);
 
         $model = $this->getModel();
         $clientModel = new $model($this->httpClient);
+        $clientModel->setProjectId($this->getProjectId());
         $actual = $clientModel->where($where)->first();
         $this->assertEquals($this->expects, $actual);
     }
@@ -122,12 +126,47 @@ abstract class Base extends BaseTest
         $this->assertAttributeEquals(['name' => 'John Doe'], 'where', $clientModel);
     }
 
+    /** @test */
+    public function first_not_found_project_id()
+    {
+        try {
+            $model = $this->getModel();
+            $clientModel = new $model($this->httpClient);
+            $clientModel->first();
+        } catch (ProjectIdExpectedException $e) {
+            $this->assertTrue(true);
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /** @test */
+    public function set_project_id()
+    {
+        $model = $this->getModel();
+        $clientModel = new $model($this->httpClient);
+        $actual = $clientModel->setProjectId($this->getProjectId());
+        $this->assertAttributeEquals($this->getProjectId(), 'projectId', $clientModel);
+        $this->assertEquals($clientModel, $actual);
+    }
+
     public function whereProvider()
     {
         return [
             [[]]
 //            [['name' => 'John Doe']]
         ];
+    }
+
+    public function setProjectId($id)
+    {
+        $this->project = $id;
+    }
+
+    public function getProjectId()
+    {
+        return $this->project;
     }
 
     abstract protected function getModel();

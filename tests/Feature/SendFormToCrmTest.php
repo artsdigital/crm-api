@@ -93,7 +93,7 @@ class SendFormToCrmTest extends Base
             ]])
             ->getMock();
         $httpLogin->method('request')
-            ->with('post', 'login', $loginFormData)
+            ->with('post', 'login', ['json' => $loginFormData])
             ->willReturn($responseLogin);
         $login = new User($httpLogin);
         $loginData = $login->token($username, $password);
@@ -108,20 +108,22 @@ class SendFormToCrmTest extends Base
 
         $responseClient = $this->createResponseMock($streamClientContent);
         $httpClient = $httpBuilder->getMock();
-        $httpClient->method('request')->with('get', 'projects/7/clients', ['phone' => '12345678901'])->willReturn($responseClient);
+        $httpClient->method('request')->with('get', 'projects/7/clients', ['json' => ['phone' => '12345678901']])->willReturn($responseClient);
 
         $responseLeadType = $this->createResponseMock($streamLeadTypeContent);
         $httpLeadType = $httpBuilder->getMock();
-        $httpLeadType->method('request')->with('get', 'projects/7/lead-types', ['name' => 'New Lead Type'])->willReturn($responseLeadType);
+        $httpLeadType->method('request')->with('get', 'projects/7/lead-types', ['json' => ['name' => 'New Lead Type']])->willReturn($responseLeadType);
 
         $responseLead = $this->createResponseMock($streamLeadContent);
         $httpLead = $httpBuilder->getMock();
-        $httpLead->method('request')->with('post', 'leads', $expect)->willReturn($responseLead);
+        $httpLead->method('request')->with('post', 'leads', ['json' => $expect])->willReturn($responseLead);
 
         $clientModel = new Client($httpClient);
         $leadTypeModel = new LeadType($httpLeadType);
         $leadModel = new Lead($httpLead);
 
+        $clientModel->setProjectId(7);
+        $leadTypeModel->setProjectId(7);
 
         $clientInfo = $clientModel->where(['phone' => str_replace(['+', '(', ')', '-', ' '], '', $data['phone'])])->first();
         $leadTypeInfo = $leadTypeModel->where(['name' => $data['type']])->first();
