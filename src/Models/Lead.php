@@ -4,6 +4,6 @@ namespace DigitalArts\Crm\SiteFormIntegration\Models;
 
 class Lead extends Base
 {
-    const INDEX_URI = 'projects/7/leads';
+    const INDEX_URI = 'projects/{projectId}/leads';
     const CREATE_URI = 'leads';
 }

@@ -6,10 +6,10 @@ class User extends Base
 {
     public function token(string $email, string $password): array
     {
-        $response = $this->client->request('post', 'login', [
+        $response = $this->client->request('post', 'login', ['json' => [
             'email' => $email,
             'password' => $password
-        ]);
+        ]]);
         $contents = json_decode($response->getBody()->getContents(), 1);
         return $contents;
     }

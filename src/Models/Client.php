@@ -4,7 +4,7 @@ namespace DigitalArts\Crm\SiteFormIntegration\Models;
 
 class Client extends Base
 {
-    const INDEX_URI = 'projects/7/clients';
+    const INDEX_URI = 'projects/{projectId}/clients';
     const CREATE_URI = 'clients';
 
     public function addPhone(int $clientId, string $phone): array
