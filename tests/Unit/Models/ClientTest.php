@@ -6,6 +6,13 @@ use DigitalArts\Crm\SiteFormIntegration\Models\Client;
 
 class ClientTest extends Base
 {
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->setProjectId(4);
+    }
+
     /** @test */
     public function add_phone()
     {
@@ -47,7 +54,7 @@ class ClientTest extends Base
 
     protected function getIndexUri()
     {
-        return 'projects/7/clients';
+        return str_replace('{projectId}', $this->getProjectId(),'projects/{projectId}/clients');
     }
 
     protected function getCreateUri()

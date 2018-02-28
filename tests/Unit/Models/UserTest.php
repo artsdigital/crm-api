@@ -24,11 +24,11 @@ class UserTest extends Base
         $responseLogin = $this->createResponseMock($streamloginContent);
         $httpLogin = $this->getMockBuilder(Client::class)
             ->setConstructorArgs([[
-                'base_uri' => 'http://test.domain/api'
+                'base_uri' => 'http://test.domain/api/',
             ]])
             ->getMock();
         $httpLogin->method('request')
-            ->with('post', 'login', $loginFormData)
+            ->with('post', 'login', ['json' => $loginFormData])
             ->willReturn($responseLogin);
         $login = new User($httpLogin);
         $loginData = $login->token($username, $password);
