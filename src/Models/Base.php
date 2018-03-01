@@ -31,6 +31,9 @@ abstract class Base implements ModelInterface
         }
         $response = $this->client->request('get', $this->indexUri(), ['json' => $this->where]);
         $contents = json_decode($response->getBody()->getContents(), 1);
+        if (empty($contents['data'][0])) {
+            return [];
+        }
         return $contents['data'][0];
     }
 
