@@ -142,6 +142,20 @@ abstract class Base extends BaseTest
     }
 
     /** @test */
+    public function first_not_found()
+    {
+        $response = $this->createResponseMock(json_encode(['data' => []]));
+        $this->httpClient->method('request')->with('get', $this->getIndexUri(), ['json' => []])->willReturn($response);
+
+        $model = $this->getModel();
+        $clientModel = new $model($this->httpClient);
+        $clientModel->setProjectId($this->getProjectId());
+        $actual = $clientModel->first();
+
+        $this->assertEquals([], $actual);
+    }
+
+    /** @test */
     public function set_project_id()
     {
         $model = $this->getModel();
