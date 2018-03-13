@@ -4,7 +4,7 @@ namespace DigitalArts\Crm\SiteFormIntegration\Models;
 
 class User extends Base
 {
-    public function token(string $email, string $password): array
+    public function token($email, $password)
     {
         $response = $this->client->request('post', 'login', ['json' => [
             'email' => $email,

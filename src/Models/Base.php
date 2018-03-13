@@ -18,13 +18,13 @@ abstract class Base implements ModelInterface
         $this->client = $client;
     }
 
-    public function where(array $parameters): self
+    public function where($parameters)
     {
         $this->where = $parameters;
         return $this;
     }
 
-    public function first(): array
+    public function first()
     {
         if (empty($this->projectId)) {
             throw new ProjectIdExpectedException('Expected set projectId property');
@@ -37,13 +37,13 @@ abstract class Base implements ModelInterface
         return $contents['data'][0];
     }
 
-    public function create(array $parameters): array
+    public function create($parameters)
     {
         $response = $this->client->request('post', $this->createUri(), ['json' => $parameters]);
         return json_decode($response->getBody()->getContents(), 1);
     }
 
-    public function setProjectId(int $id): self
+    public function setProjectId($id)
     {
         $this->projectId = $id;
         return $this;
