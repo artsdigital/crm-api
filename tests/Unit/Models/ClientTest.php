@@ -21,7 +21,7 @@ class ClientTest extends Base
             'phone' => '987645321'
         ];
         $response = $this->createResponseMock(json_encode($expects));
-        $this->httpClient->method('request')->with('post', $this->getAddPhoneUri(), $expects)->willReturn($response);
+        $this->httpClient->method('request')->with('post', $this->getAddPhoneUri(), ['json' => $expects])->willReturn($response);
 
         $model = $this->getModel();
         $clientModel = new $model($this->httpClient);
@@ -38,7 +38,7 @@ class ClientTest extends Base
             'email' => 'test@example.com'
         ];
         $response = $this->createResponseMock(json_encode($expects));
-        $this->httpClient->method('request')->with('post', $this->getAddEmailUri(), $expects)->willReturn($response);
+        $this->httpClient->method('request')->with('post', $this->getAddEmailUri(), ['json' => $expects])->willReturn($response);
 
         $model = $this->getModel();
         $clientModel = new $model($this->httpClient);
