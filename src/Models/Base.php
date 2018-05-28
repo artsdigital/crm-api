@@ -2,7 +2,6 @@
 
 namespace DigitalArts\Crm\SiteFormIntegration\Models;
 
-use DigitalArts\Crm\SiteFormIntegration\Exceptions\NotSettedProjectId;
 use DigitalArts\Crm\SiteFormIntegration\Exceptions\ProjectIdExpectedException;
 use DigitalArts\Crm\SiteFormIntegration\Interfaces\ModelInterface;
 use GuzzleHttp\ClientInterface;
